@@ -1,0 +1,16 @@
+D:\AQA24\HW4_Book\HW4_Book\bin\Debug\net5.0\HW4_Book.exe
+D:\AQA24\HW4_Book\HW4_Book\bin\Debug\net5.0\HW4_Book.deps.json
+D:\AQA24\HW4_Book\HW4_Book\bin\Debug\net5.0\HW4_Book.runtimeconfig.json
+D:\AQA24\HW4_Book\HW4_Book\bin\Debug\net5.0\HW4_Book.runtimeconfig.dev.json
+D:\AQA24\HW4_Book\HW4_Book\bin\Debug\net5.0\HW4_Book.dll
+D:\AQA24\HW4_Book\HW4_Book\bin\Debug\net5.0\ref\HW4_Book.dll
+D:\AQA24\HW4_Book\HW4_Book\bin\Debug\net5.0\HW4_Book.pdb
+D:\AQA24\HW4_Book\HW4_Book\obj\Debug\net5.0\HW4_Book.csproj.AssemblyReference.cache
+D:\AQA24\HW4_Book\HW4_Book\obj\Debug\net5.0\HW4_Book.GeneratedMSBuildEditorConfig.editorconfig
+D:\AQA24\HW4_Book\HW4_Book\obj\Debug\net5.0\HW4_Book.AssemblyInfoInputs.cache
+D:\AQA24\HW4_Book\HW4_Book\obj\Debug\net5.0\HW4_Book.AssemblyInfo.cs
+D:\AQA24\HW4_Book\HW4_Book\obj\Debug\net5.0\HW4_Book.csproj.CoreCompileInputs.cache
+D:\AQA24\HW4_Book\HW4_Book\obj\Debug\net5.0\HW4_Book.dll
+D:\AQA24\HW4_Book\HW4_Book\obj\Debug\net5.0\ref\HW4_Book.dll
+D:\AQA24\HW4_Book\HW4_Book\obj\Debug\net5.0\HW4_Book.pdb
+D:\AQA24\HW4_Book\HW4_Book\obj\Debug\net5.0\HW4_Book.genruntimeconfig.cache
