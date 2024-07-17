@@ -1,11 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 
 namespace HW4_Book
 {
     class Program
     {
+
         static void Main(string[] args)
         {
+           
             bool showMenu = false;
             while (!showMenu)
             {
@@ -13,8 +18,9 @@ namespace HW4_Book
             }
         }
 
-        static bool Menu(string book = "")
+        static bool Menu()
         {
+            var myLibraty = new Library();
             Console.Clear();
             Console.WriteLine("Choose an option:");
             Console.WriteLine("1) Add book");
@@ -26,55 +32,128 @@ namespace HW4_Book
             switch (Console.ReadLine())
             {
                 case "1":
-                    // new Book().AddBook();
-                    Console.WriteLine("Plese add book");
-                    return true;
-                case "2":
-                    //new Remove
-                    Console.WriteLine("Plese remove book");
-                    return true;
-                case "3":
-                    Console.WriteLine("Plese shw all books");
-                    return true;
-                case "4":
+                    myLibraty.AddBook();
+                    PauseBeforeContinuing();
                     return false;
-                default:
+                case "2":
+                    myLibraty.RemoveBook();
+                    PauseBeforeContinuing();
+                    return false;
+                case "3":
+                    myLibraty.GetAllBook();
+                    PauseBeforeContinuing();
+                    return false;
+                case "4":
                     return true;
+                default:
+                    Console.WriteLine("Invalid. Please try again.");
+                    PauseBeforeContinuing();
+                    return false;
             }
+        }
+
+        static void PauseBeforeContinuing()
+        {
+            Console.WriteLine("Press any key to continue.");
+            Console.ReadKey();
         }
     }
 
-    public class Book
+    class Book
     {
         public string Title { get; set; }
         public string Author { get; set; }
         public DateTime ReliseDate { get; set; }
 
+        public Dictionary<string, string> dictTitleAuthor = new Dictionary<string, string>();
+        public Dictionary<string, DateTime> dictTitleDateRealise = new Dictionary<string, DateTime>();
 
-        public Book(string title, string author, DateTime reliseDate)
+        public string EnterTitleBook()
         {
-            Title = title;
-            Author = author;
-            ReliseDate = reliseDate;
+            var title = String.Empty;
+            Console.Clear();
+            Console.WriteLine("Please enter title a book:");
+            try
+            {
+                title = Console.ReadLine();
+                dictTitleAuthor.Add(title, string.Empty);
+                var all = dictTitleAuthor;
+            }catch(ArgumentException e)
+            {
+                Console.WriteLine("Try again " + e.Message);
+            }
+
+            return title;
         }
 
+        public void EnterAuthorBook(string titleBook)
+        {
+            Console.WriteLine($"Please enter author a book {titleBook}:");
+            var author = Console.ReadLine();
+            dictTitleAuthor[titleBook] = author;
+        }
+
+        public void EnterReliseDate(string titleBook)
+        {
+            Console.WriteLine($"Please enter relise date a book {titleBook}  year in \"yyyy\" format:");
+            var date = Console.ReadLine();
+            try
+            {
+
+                DateTime parsedDate = DateTime.ParseExact(date, "yyyy", CultureInfo.InvariantCulture);
+                dictTitleDateRealise[titleBook] = parsedDate;
+            }
+            catch(FormatException e)
+            {
+                Console.WriteLine("Error: Please write year " + e.Message);
+            }
+        }
     }
 
-    public class Library
+    class Library
     {
-        void AddBook(string title, string author, string reliseDate)
+        Book book = new Book();
+        
+        public void AddBook()
         {
-
+            var titleBook = book.EnterTitleBook();
+            book.EnterAuthorBook(titleBook);
+            book.EnterReliseDate(titleBook);
+            Console.WriteLine("Successfully added to the library.");
         }
 
-        void RemoveBook(string title)
+        public void RemoveBook()
         {
-
+            Console.Clear();
+            Console.WriteLine("Please enter title book for remove:");
+            var title = Console.ReadLine();
+            Console.WriteLine($"Do you want to remove the book {title}: Y/N");
+            var value = Console.ReadLine();
+            if(value == "y" || value == "Y")
+            {
+                try
+                {
+                    book.dictTitleAuthor.Remove(title);
+                    book.dictTitleDateRealise.Remove(title);
+                }
+                catch(Exception e)
+                {
+                    Console.WriteLine("Not exist " + e.Message);
+                }
+            }
         }
 
-        void GetAllBook()
+        public void GetAllBook()
         {
-
+            Console.Clear();
+            Console.WriteLine("These are all books in libary:");
+            var author = book.dictTitleAuthor;
+            for (int i = 0; i <author.Count; i++)
+            {
+                Console.WriteLine("Title: " + author.ElementAt(i).Key
+                    + " Author: " + author.ElementAt(i).Value + "Realise Date " 
+                    + book.dictTitleDateRealise.ElementAt(i).Value);
+            }
         }
     }
 }
