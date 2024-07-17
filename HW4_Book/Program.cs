@@ -7,20 +7,18 @@ namespace HW4_Book
 {
     class Program
     {
-
         static void Main(string[] args)
         {
-           
+            Library myLibraty = new Library();
             bool showMenu = false;
             while (!showMenu)
             {
-                showMenu = Menu();
+                showMenu = Menu(myLibraty);
             }
         }
 
-        static bool Menu()
+        static bool Menu(Library myLibraty)
         {
-            var myLibraty = new Library();
             Console.Clear();
             Console.WriteLine("Choose an option:");
             Console.WriteLine("1) Add book");
@@ -71,13 +69,26 @@ namespace HW4_Book
         public string EnterTitleBook()
         {
             var title = String.Empty;
-            Console.Clear();
-            Console.WriteLine("Please enter title a book:");
+            
             try
             {
-                title = Console.ReadLine();
-                dictTitleAuthor.Add(title, string.Empty);
-                var all = dictTitleAuthor;
+                bool exist = false;
+                while (!exist)
+                {
+                    Console.Clear();
+                    Console.WriteLine("Please enter title a book:"); 
+                    title = Console.ReadLine();
+                    if (!dictTitleAuthor.ContainsKey(title))
+                    {
+                        dictTitleAuthor.Add(title, string.Empty);
+                        exist = true;
+                    }
+
+                    else
+                    {
+                        Console.WriteLine("This book exists. Try again.");
+                    }
+                }
             }catch(ArgumentException e)
             {
                 Console.WriteLine("Try again " + e.Message);
@@ -88,20 +99,32 @@ namespace HW4_Book
 
         public void EnterAuthorBook(string titleBook)
         {
-            Console.WriteLine($"Please enter author a book {titleBook}:");
+            Console.WriteLine($"Please enter author of book {titleBook}:");
             var author = Console.ReadLine();
             dictTitleAuthor[titleBook] = author;
         }
 
         public void EnterReliseDate(string titleBook)
         {
-            Console.WriteLine($"Please enter relise date a book {titleBook}  year in \"yyyy\" format:");
-            var date = Console.ReadLine();
             try
             {
-
-                DateTime parsedDate = DateTime.ParseExact(date, "yyyy", CultureInfo.InvariantCulture);
-                dictTitleDateRealise[titleBook] = parsedDate;
+                bool year = false;
+                while (!year)
+                {
+                    Console.WriteLine($"Please enter relise date a book {titleBook}  year in \"yyyy\" format:");
+                    var date = Console.ReadLine();
+                    
+                    DateTime parsedDate;
+                    if(DateTime.TryParseExact(date, "yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out parsedDate))
+                    {
+                        dictTitleDateRealise[titleBook] = parsedDate;
+                        year = true;
+                    }
+                    else
+                    {
+                        Console.WriteLine("This book exists. Try again.");
+                    }
+                }
             }
             catch(FormatException e)
             {
@@ -127,33 +150,58 @@ namespace HW4_Book
             Console.Clear();
             Console.WriteLine("Please enter title book for remove:");
             var title = Console.ReadLine();
+            
             Console.WriteLine($"Do you want to remove the book {title}: Y/N");
             var value = Console.ReadLine();
             if(value == "y" || value == "Y")
             {
                 try
                 {
-                    book.dictTitleAuthor.Remove(title);
-                    book.dictTitleDateRealise.Remove(title);
+                    if (book.dictTitleAuthor.ContainsKey(title))
+                    {
+                        book.dictTitleAuthor.Remove(title);
+                        book.dictTitleDateRealise.Remove(title);
+                        Console.WriteLine($"Successfully removed {title} book. ");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"The {title} doesn't exist");
+                    }
                 }
-                catch(Exception e)
+                catch(ArgumentException e)
                 {
-                    Console.WriteLine("Not exist " + e.Message);
+                    Console.WriteLine($"The {title} doesn't exist." + e.Message);
                 }
             }
+            
         }
 
         public void GetAllBook()
         {
             Console.Clear();
             Console.WriteLine("These are all books in libary:");
-            var author = book.dictTitleAuthor;
-            for (int i = 0; i <author.Count; i++)
+            try
             {
-                Console.WriteLine("Title: " + author.ElementAt(i).Key
-                    + " Author: " + author.ElementAt(i).Value + "Realise Date " 
-                    + book.dictTitleDateRealise.ElementAt(i).Value);
+                var author = book.dictTitleAuthor;
+
+                if (author.Count == 0)
+                {
+                    Console.WriteLine("Library is empty");
+                }
+
+                for (int i = 0; i < author.Count; i++)
+                {
+
+                    Console.WriteLine("Title: " + author.ElementAt(i).Key
+                        + "; Author: " + author.ElementAt(i).Value + "; Realise Date: "
+                        + book.dictTitleDateRealise.ElementAt(i).Value.Year + ";");
+                }
             }
+            catch (ArgumentOutOfRangeException e)
+            {
+                Console.WriteLine("ERROR:" + e.Message);
+            }
+            
         }
     }
 }
